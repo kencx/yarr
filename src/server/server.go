@@ -18,6 +18,8 @@ type Server struct {
 
 	BasePath string
 
+	RefreshOnStart bool
+
 	// auth
 	Username string
 	Password string
@@ -49,7 +51,7 @@ func (s *Server) Start() {
 	s.worker.FindFavicons()
 	s.worker.StartFeedCleaner()
 	s.worker.SetRefreshRate(refreshRate)
-	if refreshRate > 0 {
+	if refreshRate > 0 && s.RefreshOnStart {
 		s.worker.RefreshFeeds()
 	}
 

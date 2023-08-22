@@ -49,7 +49,7 @@ func main() {
 	platform.FixConsoleIfNeeded()
 
 	var addr, db, authfile, auth, certfile, keyfile, basepath, logfile string
-	var ver, open bool
+	var ver, open, refresh bool
 
 	flag.CommandLine.SetOutput(os.Stdout)
 
@@ -71,6 +71,7 @@ func main() {
 	flag.StringVar(&logfile, "log-file", opt("YARR_LOGFILE", ""), "`path` to log file to use instead of stdout")
 	flag.BoolVar(&ver, "version", false, "print application version")
 	flag.BoolVar(&open, "open", false, "open the server in browser")
+	flag.BoolVar(&refresh, "refresh", true, "refresh on startup")
 	flag.Parse()
 
 	if ver {
@@ -134,6 +135,7 @@ func main() {
 
 	worker.SetVersion(Version)
 	srv := server.NewServer(store, addr)
+	srv.RefreshOnStart = refresh
 
 	if basepath != "" {
 		srv.BasePath = "/" + strings.Trim(basepath, "/")
